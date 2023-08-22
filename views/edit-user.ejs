@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit User</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+</head>
+<body>
+    <section class="edit-user">
+        <div class="container">
+            <h1>Edit User</h1>
+            <form id="edit-user">
+                <div class="mb-3">
+                  <label for="exampleInputEmail1" class="form-label">Username</label>
+                  <input type="text" name="username" class="form-control" id="username" aria-describedby="emailHelp">
+                </div>
+                <div class="mb-3">
+                  <label for="exampleInputPassword1" class="form-label">Password</label>
+                  <input type="password" name="password" class="form-control" id="password">
+                </div>
+                <div class="mb-3">
+                    <label for="exampleInputPassword1" class="form-label">Role</label>
+                    <select class="form-select" id="role" aria-label="Default select example">
+                        <option selected>Select the user role</option>
+                        <option value="Admin">Admin</option>
+                        <option value="Basic">Basic User</option>
+                    </select>
+                </div>
+                
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+            <input type="hidden" id="user-id" value="<%= user.id %>">
+        </div>
+    </section>
+
+    <script> 
+        const ul = document.querySelector("ul");
+        const getUsers = async () => {
+          try {
+            const userId = document.querySelector("#user-id").value
+            const res = await fetch("/api/auth/user/"+userId, {
+              headers: { 'Content-Type': 'application/json' }
+            });
+  
+            let response = await res.json()
+            let data = response.data
+            console.log(response);
+            
+            for (let key in data) {
+              if (data.hasOwnProperty(key) && ["username", "role"].includes(key)) {
+                const value = data[key];
+                if(key == 'username') {
+                    document.querySelector("#username").value = value
+                } else if(key == 'username') {
+
+                }
+              }
+            }
+          } catch (error) {
+            console.error("An error occurred:", error);
+          }
+        };
+  
+        getUsers();
+  
+    </script>
+</body>
+</html>

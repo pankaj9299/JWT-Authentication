@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>User page</title>
+  </head>
+  <body>
+    <h1>Users</h1>
+    <a href="/logout" class="logout">Logout</a>
+    <ul></ul>
+    <script> 
+      const ul = document.querySelector("ul");
+      const getUsers = async () => {
+        try {
+          const res = await fetch("/api/auth/getUser", {
+            headers: { 'Content-Type': 'application/json' }
+          });
+
+          let response = await res.json()
+          let data = response.data
+          console.log(response);
+          let wrapperHtml = ''; 
+
+          for (let key in data) {
+            if (data.hasOwnProperty(key)) {
+              const value = data[key];
+              wrapperHtml = `
+                <li>${key}: ${value}</li>
+              `
+              ul.innerHTML += wrapperHtml
+            }
+          }
+        } catch (error) {
+          console.error("An error occurred:", error);
+        }
+      };
+
+      getUsers();
+
+    </script>
+  </body>
+</html>
